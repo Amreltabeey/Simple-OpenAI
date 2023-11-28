@@ -1,0 +1,29 @@
+import os
+import requests
+
+# Replace 'YOUR_API_KEY' with your actual OpenAI API key
+api_key = 'YOUR_API_KEY'
+headers = {
+    'Content-Type': 'application/json',
+    'Authorization': f'Bearer {api_key}'
+}
+
+def openai_chat_completion(prompt):
+    endpoint = 'https://api.openai.com/v1/engines/davinci/completions'
+    data = {
+        'prompt': prompt,
+        'max_tokens': 100  # You can adjust the number of tokens
+    }
+    response = requests.post(endpoint, headers=headers, json=data)
+    if response.status_code == 200:
+        return response.json()['choices'][0]['text']
+    else:
+        return f"Error: {response.status_code} - {response.json()['error']['message']}"
+
+# Example prompt
+prompt_text = "Tell me a bit about yourself."
+
+# Get completion from OpenAI ChatCompletion
+completion = openai_chat_completion(prompt_text)
+
+print(f"Generated response: {completion}")
